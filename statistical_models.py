@@ -17,27 +17,23 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.metrics import accuracy_score
 
-#df = pd.read_csv('finance_data.csv', index_col=['Ticker', 'Fiscal Year', 'Fiscal Period'])
-df = df.drop(columns=['report_date', 'shifted_chg'])
-Y = df.loc[:,'pos_neg'].values
-df = df.drop(columns=['pos_neg'])
 
-X = df.values
-x_scale = scale(X)
-print(x_scale)
-data = pd.read_csv('ratios.csv', index_col=['Ticker', 'Fiscal Year', 'Fiscal Period'])
-print(data.head())
+data = pd.read_csv('finance_data.csv', index_col=['Ticker', 'Fiscal Year', 'Fiscal Period'])
 print(data.columns)
 
 Y = data.loc[:,'pos_neg']
-X = data.drop(columns=['pos_neg'])
-X = scale(X) 
+X = data.drop(columns=['pos_neg', 'shifted_chg', 'report_date'])
+X = scale(X.values) 
 
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=.2, shuffle=False)
-h = .02  # step size in the mesh 
+h = .02  # step size in the mesh#i ##i3#fff 
 
+kernal = 1.0 * RBF(1.0)
+gpc = GaussianProcessClassifier(kernel=kernal)
 
-Z = model.predict(X_test)
+gpc.fit(X_train, y_train)
+
+Z = gpc.predict(X_test)
 acc = accuracy_score(y_test, Z)
 print(acc)
 print(y_test[0:10])
