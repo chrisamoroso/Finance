@@ -1,6 +1,8 @@
-numpy 
+numpy
 pandas
 requests
 tensorflow
 matplotlib
 scikit-learn
+yfinance
+openpyxl
